@@ -6,6 +6,7 @@ use App\Models\login;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\UsersType;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -18,16 +19,18 @@ class ApiController extends Controller
         $request->validate([
             "name" => "required",
             "email" => "required|email|unique:users",
-            "role" => "required",
-            "password" => "required|confirmed"
+            "phone" => "required",
+            "password" => "required|confirmed",
+            "users_type" => "required"
         ]);
 
         // User Model
         User::create([
             "name" => $request->name,
             "email" => $request->email,
-            "role" => $request->role,
-            "password" => Hash::make($request->password)
+            "phone" => $request->phone,
+            "password" => Hash::make($request->password),
+            "users_type" => $request->users_type,
         ]);
 
         // Response
@@ -62,27 +65,16 @@ class ApiController extends Controller
             'phone'     => $user->phone
         ];
 
-        // ====> Check Role
-        $role = '';
-        if ($user->role == 1) { //
-            $role = 'Admin';
-
-        } else if($user->role == 2){
-            $role = 'Staff';
-        }else{
-            $role = "Customer";
-        }
-
+        $userData = User::with('role')->find($user->id);
+        $userType = UsersType::find($userData->users_type);
         if(!empty($token)){
 
             return response()->json([
                 "status" => true,
                 "message" => "User logged in succcessfully",
-                // "data" => $user,
-                "name" => $user->name,
-                "email" => $user->email,
-                "token" => $token,
-                "role" => $role
+                "data" => $userData,
+                // "type" => $userType,
+                "token" => $token
             ]);
         }
 
@@ -100,7 +92,8 @@ class ApiController extends Controller
         return response()->json([
             "status" => true,
             "message" => "Profile data",
-            "data" => $userdata
+            "data" => $userdata,
+
         ]);
     }
 
