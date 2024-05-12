@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\login;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\UsersType;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -16,13 +14,15 @@ class ApiController extends Controller
     public function register(Request $request){
 
         // data validation
-        $request->validate([
-            "name" => "required",
+        $request->validate(
+            [
+            "name" => "required|max:100",
             "email" => "required|email|unique:users",
-            "phone" => "required",
+            'phone' => 'required|numeric|digits_between:8,12',
             "password" => "required|confirmed",
             "users_type" => "required"
-        ]);
+        ],
+    );
 
         // User Model
         User::create([
@@ -66,14 +66,12 @@ class ApiController extends Controller
         ];
 
         $userData = User::with('role')->find($user->id);
-        $userType = UsersType::find($userData->users_type);
         if(!empty($token)){
 
             return response()->json([
                 "status" => true,
                 "message" => "User logged in succcessfully",
                 "data" => $userData,
-                // "type" => $userType,
                 "token" => $token
             ]);
         }
