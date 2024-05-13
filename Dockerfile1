@@ -1,0 +1,31 @@
+# # Use a recent PHP image compatible with Laravel 10
+FROM laravelphp/vapor
+
+# # Install system dependencies
+# # RUN apt-get update && \
+# #     apt-get install -y git zip unzip libexif-dev
+
+# # # Install Composer globally
+# # RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# # # Install PHP extensions
+# # RUN docker-php-ext-install exif
+
+# # # Set environment variables to allow Composer to run as superuser and disable plugins
+# # ENV COMPOSER_ALLOW_SUPERUSER=1
+# # ENV COMPOSER_NO_PLUGINS=1
+
+# WORKDIR /var/www
+
+# COPY . /var/www
+# RUN chmod 777 /var/www
+# RUN composer update
+# RUN php artisan cache:clear
+# RUN php artisan config:clear
+# RUN cp .env.example .env
+# RUN php artisan key:generate --no-interaction
+
+# EXPOSE 8000
+
+# # CMD ["php-fpm"]
+# CMD php artisan --host=0.0.0.0 serve
