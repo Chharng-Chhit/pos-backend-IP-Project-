@@ -52,4 +52,4 @@ Route::group(["middleware" => ["auth:api"], 'prefix' => 'type'], function(){
     // Route::get("logout", [ApiController::class, "logout"]);
 });
 
-// Route::post('/add', [GalleryController::class], 'store');
+Route::post('/add', [GalleryController::class], 'store');
