@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\Product\ProductTypeController;
 use App\Http\Controllers\Product\ProductController;
-use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\Api\ImageUploadController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,8 +48,10 @@ Route::group(["middleware" => ["auth:api"], 'prefix' => 'type'], function(){
         return "hello";
     });
     Route::get("/", [ProductTypeController::class, "getData"]);
-    // Route::get("refresh", [ApiController::class, "refreshToken"]);
-    // Route::get("logout", [ApiController::class, "logout"]);
 });
-
-Route::post('/add', [GalleryController::class], 'store');
+Route::get('/get', function(){
+    return "Hello world";
+});
+Route::get("/getdata", [ProductTypeController::class, "getData"]);
+Route::post('/uploadImage', [ImageUploadController::class, "upload"]);
+Route::get('/fetch', [ImageUploadController::class, 'fetch']);
