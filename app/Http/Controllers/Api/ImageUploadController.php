@@ -46,7 +46,6 @@ class ImageUploadController extends Controller
 
             // Convert the image content to base64
             $imageBase64 = 'data:image/jpeg;base64,'. base64_encode($image);
-
             // Return the base64 encoded image as response
             return response()->json([
                 'image_base64' => $imageBase64,
