@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\Product\ProductTypeController;
 use App\Http\Controllers\Product\ProductController;
-use App\Http\Controllers\Api\ImageUploadController;
+use App\Http\Controllers\ImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,5 +53,6 @@ Route::get('/get', function(){
     return "Hello world";
 });
 Route::get("/getdata", [ProductTypeController::class, "getData"]);
-Route::post('/uploadImage', [ImageUploadController::class, "upload"]);
-Route::get('/fetch', [ImageUploadController::class, 'fetch']);
+Route::get('/getImage', [ImageController::class, 'fetch']);
+Route::middleware('auth:api')->post('/uploadImage', [ImageController::class, "upload"]);
+Route::delete('/deleteImage', [ImageController::class, "delete"]);

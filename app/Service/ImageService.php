@@ -43,4 +43,18 @@ class ImageService {
 
         return '';
     }
+    public function deleteImage($path)
+    {
+        // Check if the image exists in MinIO
+        if (Storage::disk('minio')->exists($path)) {
+            // Delete the image
+            Storage::disk('minio')->delete($path);
+
+            // Return success response
+            return response()->json(['message' => 'Image deleted successfully'], 200);
+        } else {
+            // Image not found, return 404
+            return response()->json(['message' => 'Image not found'], 404);
+        }
+    }
 }
