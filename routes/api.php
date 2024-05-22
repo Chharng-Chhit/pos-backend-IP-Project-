@@ -43,6 +43,7 @@ Route::group(["middleware" => ["auth:api"], 'prefix' => 'product'], function(){
     // Product type
     Route::get("/types", [ProductTypeController::class, "getData"]);
     Route::post("/type", [ProductTypeController::class, "create"]);
+    Route::get('/types/{key}', [ProductTypeController::class, "search"]);
     Route::put("/type/{id}", [ProductTypeController::class, "update"]);
     Route::delete("/type/{id}", [ProductTypeController::class, "delete"]);
 

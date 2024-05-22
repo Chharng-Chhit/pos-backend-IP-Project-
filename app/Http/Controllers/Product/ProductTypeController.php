@@ -29,6 +29,22 @@ class ProductTypeController extends Controller
         // return $data;
     }
 
+    public function search($keyword){
+        $data = ProductsType::select('*')
+        ->withCount([
+            'product as amout'
+        ])
+        ->where('name', 'like', '%'.$keyword.'%')
+        ->orderBy('updated_at', 'DESC')
+        ->get();
+        return response()->json(
+            [
+                'data' => $data
+            ], Response::HTTP_OK,
+        );
+
+    }
+
     public function create(Request $req)
     {
         $req->validate([
