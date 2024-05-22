@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ImageService {
-    public function uploadImage($groupImage, $base64Image){
+    public function uploadImage($imageName, $groupImage, $base64Image){
 
         // Check if the base64 string contains the correct data
         if (preg_match('/^data:image\/(\w+);base64,/', $base64Image, $type)) {
@@ -29,17 +29,24 @@ class ImageService {
             $metaData = stream_get_meta_data($tempFile);
             $tempFilePath = $metaData['uri'];
 
+            $dateTime = date('Ymd_His');
             // Define a unique filename
-            $filename = Str::random(10) . '.' . $type;
+            $filename = $imageName . '_' . $dateTime . '.' . $type;
 
-            // Store the image on MinIO
-            $filePath = Storage::disk('minio')->putFile('pos/'. $groupImage, $tempFilePath, $filename);
+            // Get the file contents from the temporary file
+            $fileContents = file_get_contents($tempFilePath);
+
+            // Store the image on MinIO with the specified filename
+            $filePath = 'pos/' . $groupImage . '/' . $filename;
+            Storage::disk('minio')->put($filePath, $fileContents);
 
             // Close and remove the temporary file
             fclose($tempFile);
 
             return $filePath;
+            // return response()->json(['filePath' => $filePath], 200);
         }
+
 
         return '';
     }

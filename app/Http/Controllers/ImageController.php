@@ -16,12 +16,17 @@ class ImageController extends Controller
         $request->validate([
             'image' => 'required|string', // Ensure the uploaded file is a base64 string
             'group' => 'required|string', // Ensure the uploaded'
+            'name' => 'required|string', // Ensure the uploaded
         ]);
 
         $groupImage = $request->input('group');
         $imageBase64 = $request->input('image');
+        $imageName = $request->input('name');
         $image = new ImageService();
-        $filePath = $image->uploadImage($groupImage, $imageBase64);
+
+        if($groupImage && $imageName && $imageBase64){
+            $filePath = $image->uploadImage($imageName, $groupImage, $imageBase64);
+        }
 
         return response()->json([
             'message' => 'Image uploaded successfully',
@@ -29,7 +34,7 @@ class ImageController extends Controller
         ], 200);
     }
 
-    public function fetch(Request $request)
+    public function getImage(Request $request)
     {
         // Retrieve the path from the request header
         $path = $request->input('image');

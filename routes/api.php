@@ -38,21 +38,26 @@ Route::group(["middleware" => ["auth:api"], 'prefix' => 'product'], function(){
         return "hello";
     });
     Route::get("/", [ProductController::class, "getData"]);
-    // Route::get("refresh", [ApiController::class, "refreshToken"]);
-    // Route::get("logout", [ApiController::class, "logout"]);
+
+
+    // Product type
+    Route::get("/types", [ProductTypeController::class, "getData"]);
+    Route::post("/type", [ProductTypeController::class, "create"]);
+    Route::put("/type/{id}", [ProductTypeController::class, "update"]);
+    Route::delete("/type/{id}", [ProductTypeController::class, "delete"]);
+
 });
 
 Route::group(["middleware" => ["auth:api"], 'prefix' => 'type'], function(){
 
-    Route::get('/', function(){
-        return "hello";
-    });
     Route::get("/", [ProductTypeController::class, "getData"]);
+    Route::post("/", [ProductTypeController::class, "create"]);
+    Route::put("/{id}", [ProductTypeController::class, "update"]);
 });
 Route::get('/get', function(){
     return "Hello world";
 });
 Route::get("/getdata", [ProductTypeController::class, "getData"]);
-Route::get('/getImage', [ImageController::class, 'fetch']);
+Route::get('/getImage', [ImageController::class, 'getImage']);
 Route::middleware('auth:api')->post('/uploadImage', [ImageController::class, "upload"]);
 Route::delete('/deleteImage', [ImageController::class, "delete"]);

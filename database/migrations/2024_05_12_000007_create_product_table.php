@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('type_id')->index()->unsigned(); //Forgien
             $table->foreign('type_id')->references('id')->on('category')->onDelete('cascade');
 
-            $table->string('code',50)->nullable();
+            $table->string('code',50)->unique();
             $table->string('name', 150)->default('');
             $table->string('image', 500)->nullable();
             $table->double('unit_price')->nullable();
