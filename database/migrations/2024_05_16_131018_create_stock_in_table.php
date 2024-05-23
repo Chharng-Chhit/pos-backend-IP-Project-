@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('stock_in', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('product_id');
+
             $table->timestamps();
         });
     }

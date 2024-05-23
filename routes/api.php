@@ -34,31 +34,29 @@ Route::group(["middleware" => ["auth:api"]], function(){
 
 Route::group(["middleware" => ["auth:api"], 'prefix' => 'product'], function(){
 
-    Route::get('/', function(){
-        return "hello";
-    });
+    // Product
     Route::get("/", [ProductController::class, "getData"]);
+    Route::get('/types/category', [ProductController::class, "getProductByCategory"]);
+    Route::get('/searchName', [ProductController::class, "searchName"]);
+    Route::get('/searchId', [ProductController::class, "searchID"]);
+    Route::put('/update', [ProductController::class, "update"]);
+    Route::delete('/delete', [ProductController::class, "delete"]);
+    Route::post('/', [ProductController::class,"create"]);
 
 
     // Product type
     Route::get("/types", [ProductTypeController::class, "getData"]);
+
     Route::post("/type", [ProductTypeController::class, "create"]);
-    Route::get('/types/{key}', [ProductTypeController::class, "search"]);
-    Route::put("/type/{id}", [ProductTypeController::class, "update"]);
-    Route::delete("/type/{id}", [ProductTypeController::class, "delete"]);
+    Route::get('/type/search', [ProductTypeController::class, "searchByName"]);
+    Route::put("/type/update", [ProductTypeController::class, "update"]);
+    Route::delete("/type/delete", [ProductTypeController::class, "delete"]);
+
 
 });
 
-Route::group(["middleware" => ["auth:api"], 'prefix' => 'type'], function(){
 
-    Route::get("/", [ProductTypeController::class, "getData"]);
-    Route::post("/", [ProductTypeController::class, "create"]);
-    Route::put("/{id}", [ProductTypeController::class, "update"]);
-});
-Route::get('/get', function(){
-    return "Hello world";
-});
 Route::get("/getdata", [ProductTypeController::class, "getData"]);
 Route::get('/getImage', [ImageController::class, 'getImage']);
 Route::middleware('auth:api')->post('/uploadImage', [ImageController::class, "upload"]);
-Route::delete('/deleteImage', [ImageController::class, "delete"]);
+Route::middleware('auth:api')->delete('/deleteImage', [ImageController::class, "delete"]);

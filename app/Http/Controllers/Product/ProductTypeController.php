@@ -14,7 +14,7 @@ class ProductTypeController extends Controller
     {
         $data = ProductsType::select('*')
         ->withCount([
-            'product as amout'
+            'product as amount'
         ]);
 
         // ===>> Get data from DB
@@ -29,10 +29,29 @@ class ProductTypeController extends Controller
         // return $data;
     }
 
-    public function search($keyword){
+    // Search for products Type by ID
+    public function getById($req){
+        $id = $req->getParam('id');
         $data = ProductsType::select('*')
         ->withCount([
-            'product as amout'
+            'product as amount'
+        ])
+        ->where('id', $id)
+        ->orderBy('updated_at', 'DESC')
+        ->get();
+        return response()->json(
+            [
+                'data' => $data
+            ], Response::HTTP_OK,
+        );
+    }
+
+    // Search for products Type by Name
+    public function searchByName(Request $req){
+        $keyword = $req->input('id');
+        $data = ProductsType::select('*')
+        ->withCount([
+            'product as amount'
         ])
         ->where('name', 'like', '%'.$keyword.'%')
         ->orderBy('updated_at', 'DESC')
@@ -71,7 +90,8 @@ class ProductTypeController extends Controller
         );
     }
 
-    public function update(Request $req, $id){
+    public function update(Request $req){
+        $id = $req->input('id');
         $req->validate([
             'name' =>'required|max:50'
         ]);
@@ -105,13 +125,14 @@ class ProductTypeController extends Controller
         }else{
             return response()->json(
                 [
-                    'data' => $data
+                    'message' => 'Not found',
                 ], Response::HTTP_BAD_REQUEST
             );
         }
     }
 
-    public function delete(Request $req, $id){
+    public function delete(Request $req){
+        $id = $req->input('id');
         $data = ProductsType::find($id);
         if($data){
             $imageService = new ImageService;
@@ -128,7 +149,7 @@ class ProductTypeController extends Controller
         }else{
             return response()->json(
                 [
-                    'data' => $data
+                    'message' => 'Not found',
                 ], Response::HTTP_BAD_REQUEST
             );
         }
