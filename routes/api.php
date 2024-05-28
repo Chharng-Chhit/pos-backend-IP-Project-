@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\Product\ProductTypeController;
 use App\Http\Controllers\Product\ProductController;
-use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\ImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,22 +34,29 @@ Route::group(["middleware" => ["auth:api"]], function(){
 
 Route::group(["middleware" => ["auth:api"], 'prefix' => 'product'], function(){
 
-    Route::get('/', function(){
-        return "hello";
-    });
+    // Product
     Route::get("/", [ProductController::class, "getData"]);
-    // Route::get("refresh", [ApiController::class, "refreshToken"]);
-    // Route::get("logout", [ApiController::class, "logout"]);
+    Route::get('/types/category', [ProductController::class, "getProductByCategory"]);
+    Route::get('/searchName', [ProductController::class, "searchName"]);
+    Route::get('/searchId', [ProductController::class, "searchID"]);
+    Route::put('/update', [ProductController::class, "update"]);
+    Route::delete('/delete', [ProductController::class, "delete"]);
+    Route::post('/', [ProductController::class,"create"]);
+
+
+    // Product type
+    Route::get("/types", [ProductTypeController::class, "getData"]);
+
+    Route::post("/type", [ProductTypeController::class, "create"]);
+    Route::get('/type/search', [ProductTypeController::class, "searchByName"]);
+    Route::put("/type/update", [ProductTypeController::class, "update"]);
+    Route::delete("/type/delete", [ProductTypeController::class, "delete"]);
+
+
 });
 
-Route::group(["middleware" => ["auth:api"], 'prefix' => 'type'], function(){
 
-    Route::get('/', function(){
-        return "hello";
-    });
-    Route::get("/", [ProductTypeController::class, "getData"]);
-    // Route::get("refresh", [ApiController::class, "refreshToken"]);
-    // Route::get("logout", [ApiController::class, "logout"]);
-});
-
-Route::post('/add', [GalleryController::class], 'store');
+Route::get("/getdata", [ProductTypeController::class, "getData"]);
+Route::get('/getImage', [ImageController::class, 'getImage']);
+Route::middleware('auth:api')->post('/uploadImage', [ImageController::class, "upload"]);
+Route::middleware('auth:api')->delete('/deleteImage', [ImageController::class, "delete"]);
