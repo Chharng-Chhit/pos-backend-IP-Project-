@@ -36,9 +36,9 @@ Route::group(["middleware" => ["auth:api"], 'prefix' => 'product'], function(){
 
     // Product
     Route::get("/", [ProductController::class, "getData"]);
-    Route::get('/types/category', [ProductController::class, "getProductByCategory"]);
     Route::get('/searchName', [ProductController::class, "searchName"]);
     Route::get('/searchId', [ProductController::class, "searchID"]);
+    Route::get('/types/category', [ProductController::class, "getProductByCategory"]);
     Route::put('/update', [ProductController::class, "update"]);
     Route::delete('/delete', [ProductController::class, "delete"]);
     Route::post('/', [ProductController::class,"create"]);
@@ -46,7 +46,6 @@ Route::group(["middleware" => ["auth:api"], 'prefix' => 'product'], function(){
 
     // Product type
     Route::get("/types", [ProductTypeController::class, "getData"]);
-
     Route::post("/type", [ProductTypeController::class, "create"]);
     Route::get('/type/search', [ProductTypeController::class, "searchByName"]);
     Route::put("/type/update", [ProductTypeController::class, "update"]);

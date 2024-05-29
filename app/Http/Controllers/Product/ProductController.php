@@ -27,7 +27,7 @@ class ProductController extends Controller
     }
 
     public function getProductByCategory(Request $req){
-        $data = ProductsType::select('*')->with('product as products');
+        $data = ProductsType::select('*')->with('product')->withCount('product as amount');
         $data = $data->orderBy('updated_at', 'DESC')->get();
         return response()->json([
             "message" => 'success',
