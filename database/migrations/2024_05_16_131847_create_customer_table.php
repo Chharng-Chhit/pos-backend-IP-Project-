@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('customer', function (Blueprint $table) {
             $table->id();
             $table->string('name', length:50);
+            $table->string('email', length:50);
             $table->string('phone', length:15);
+            $table->integer('loyalty_points')->default(0);
             $table->timestamps();
         });
     }

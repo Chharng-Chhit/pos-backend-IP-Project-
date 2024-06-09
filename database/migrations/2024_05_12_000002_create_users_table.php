@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('avatar', 100)->default('static/icon/user.png');
             $table->string('phone', 50)->unique();
             $table->string('email')->unique();
+            $table->integer('loyalty_points')->default(0);
             $table->boolean('is_active')->default(true);
             $table->timestamp('email_verified_at')->default(Carbon::now());
             $table->string('password');

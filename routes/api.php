@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\Product\ProductTypeController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\User\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +53,14 @@ Route::group(["middleware" => ["auth:api"], 'prefix' => 'product'], function(){
     Route::delete("/type/delete", [ProductTypeController::class, "delete"]);
 
 
+});
+
+Route::group(["middleware" => "auth:api", 'prefix' => 'user'], function(){
+
+    // user
+    Route::get('/all', [UserController::class, 'getUser']);
+    Route::get('/', [UserController::class, 'notCustomer']); // for get user that is not a customer
+    Route::get('/customers', [UserController::class, 'getCustomer']);
 });
 
 

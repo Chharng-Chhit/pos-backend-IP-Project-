@@ -17,12 +17,11 @@ return new class extends Migration
 
             $table->integer('type_id')->index()->unsigned(); //Forgien
             $table->foreign('type_id')->references('id')->on('category')->onDelete('cascade');
-
             $table->string('code',50)->unique();
             $table->string('name', 150)->default('');
             $table->string('image', 500)->nullable();
             $table->double('unit_price')->nullable();
-            $table->decimal('in_stock')->default(0);
+            $table->integer('in_stock')->default(0);
             $table->decimal('discount', 10, 2)->default(0);
             $table->timestamps();
 

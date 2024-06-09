@@ -7,14 +7,19 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductsType;
 use App\Service\ImageService;
-use Spatie\FlareClient\Http\Exceptions\NotFound;
 
 class ProductController extends Controller
 {
 
     public function getData(Request $req)
     {
-        $data = Product::select('*');
+
+        // get all products
+        $data = Product::with(['type'=> function ($type){
+            $type->select('id', 'name');
+        }])
+        ->select("*");
+        ;
 
         // ===>> Get data from DB
         $data = $data->orderBy('updated_at', 'DESC')
