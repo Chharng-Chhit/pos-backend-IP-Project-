@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Product;
+
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
@@ -15,15 +16,14 @@ class ProductController extends Controller
     {
 
         // get all products
-        $data = Product::with(['type'=> function ($type){
+        $data = Product::with(['type' => function ($type) {
             $type->select('id', 'name');
         }])
-        ->select("*");
-        ;
+            ->select("*");;
 
         // ===>> Get data from DB
         $data = $data->orderBy('updated_at', 'DESC')
-        ->get();
+            ->get();
         // ===>> Return data to client
         return response()->json([
             "message" => 'success',
@@ -31,70 +31,79 @@ class ProductController extends Controller
         ], Response::HTTP_OK);
     }
 
-    public function getProductByCategory(Request $req){
+    public function getProductByCategory(Request $req)
+    {
         $data = ProductsType::select('*')->with('product')->withCount('product as amount');
         $data = $data->orderBy('updated_at', 'DESC')->get();
         return response()->json([
             "message" => 'success',
+            "getBy" => "category",
             "data"   => $data
         ], Response::HTTP_OK);
     }
 
 
     // Search Product by ID
-    public function searchID(Request $req){
+    public function searchID(Request $req)
+    {
         $id = $req->input('id');
         $data = Product::select('*')
-        ->where('id', $id)
-        ->get();
+            ->where('id', $id)
+            ->get();
 
-        if ($data){
+        if ($data) {
             return response()->json(
                 [
-                   'message'   =>'success',
+                    'message'   => 'success',
+                    'keywords' => $id,
                     'data' => $data
-                ], Response::HTTP_OK,
+                ],
+                Response::HTTP_OK,
             );
-        }
-        else{
+        } else {
             return response()->json(
                 [
-                   'message'   => 'Not Found',
-                ], Response::HTTP_NOT_FOUND,
+                    'message'   => 'Not Found',
+                ],
+                Response::HTTP_NOT_FOUND,
             );
         }
     }
 
     // Search Product by Name and Code
-    public function searchName(Request $req){
+    public function searchName(Request $req)
+    {
         $key = $req->input('key');
         $data = Product::select('*')
-        ->where(function($query) use ($key) {
-            $query->where('name', 'like', '%' . $key . '%')
-                  ->orWhere('code', 'like', '%' . $key . '%');
-        })
-        ->orderBy('updated_at', 'DESC')
-        ->get();
+            ->where(function ($query) use ($key) {
+                $query->where('name', 'like', '%' . $key . '%')
+                    ->orWhere('code', 'like', '%' . $key . '%');
+            })
+            ->orderBy('updated_at', 'DESC')
+            ->get();
 
-        if ($data){
+        if ($data) {
             return response()->json(
                 [
                     'message'   => 'success',
+                    'keywords' => $key,
                     'data' => $data
-                ], Response::HTTP_OK,
+                ],
+                Response::HTTP_OK,
             );
-        }
-        else{
+        } else {
             return response()->json(
                 [
                     'message'   => 'Not Found',
-                ], Response::HTTP_NOT_FOUND,
+                ],
+                Response::HTTP_NOT_FOUND,
             );
         }
     }
 
     // create Product
-    public function create(Request $req){
+    public function create(Request $req)
+    {
         $req->validate([
             'name'  => 'required|max:100',
             'code'  => 'required|max:20',
@@ -103,10 +112,10 @@ class ProductController extends Controller
         ]);
 
         $productType = ProductsType::find($req->type_id);
-        if(!$productType){
+        if (!$productType) {
             return response()->json([
-               'status' => 'false',
-               'message' => [
+                'status' => 'false',
+                'message' => [
                     'type_id' => 'Product type does not exist'
                 ],
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -117,7 +126,7 @@ class ProductController extends Controller
         // Check product code exists
         $product = Product::where('code', $req->code)->first();
 
-        if($product){
+        if ($product) {
             return response()->json([
                 'status' => 'false',
                 'message' => [
@@ -135,7 +144,7 @@ class ProductController extends Controller
 
         // check request image
         $image = $req->image;
-        if ($image){
+        if ($image) {
             $imageServer = new ImageService;
             $imagePath = $imageServer->uploadImage($data->name, 'product', $image);
             $data->image = $imagePath;
@@ -147,12 +156,14 @@ class ProductController extends Controller
                 'status' => 'success',
                 'message' => 'Successfully created',
                 'data' => $data
-            ], Response::HTTP_OK
+            ],
+            Response::HTTP_OK
         );
     }
 
     // update product
-    public function update(Request $req){
+    public function update(Request $req)
+    {
         $req->validate([
             'name'  => 'required|max:100',
             'code'  => 'required|max:20',
@@ -164,15 +175,16 @@ class ProductController extends Controller
         $data = new Product();
         $data = Product::find($id);
 
-        if($data === null){
+        if ($data === null) {
             return response()->json(
                 [
-                   'message' => 'Not found',
-                ], Response::HTTP_BAD_REQUEST
+                    'message' => 'Not found',
+                ],
+                Response::HTTP_BAD_REQUEST
             );
         }
 
-        if($data){
+        if ($data) {
             $data->name = $req->name;
             $data->code = $req->code;
             $data->type_id = $req->type_id;
@@ -181,9 +193,9 @@ class ProductController extends Controller
             $data->save();
 
             $image = $req->image;
-            if($image){
+            if ($image) {
                 $imageServer = new ImageService;
-                if(!$data->image == ''){
+                if (!$data->image == '') {
                     $imageServer->deleteImage($data->image);
                 }
 
@@ -199,48 +211,50 @@ class ProductController extends Controller
                 'data' => $data,
                 'message' => 'Successfully updated'
             ], Response::HTTP_ACCEPTED);
-        }else{
+        } else {
             return response()->json(
                 [
                     'message' => 'Not found',
-                ], Response::HTTP_BAD_REQUEST
+                ],
+                Response::HTTP_BAD_REQUEST
             );
         }
     }
 
     // delete product
-    public function delete(Request $req){
+    public function delete(Request $req)
+    {
         $id = $req->input('id');
         $data = Product::find($id);
 
-        if($data === null){
+        if ($data === null) {
             return response()->json(
                 [
-                   'message' => 'Not found',
-                ], Response::HTTP_BAD_REQUEST
+                    'message' => 'Not found',
+                ],
+                Response::HTTP_BAD_REQUEST
             );
         }
 
-        if($data){
+        if ($data) {
             $imageServer = new ImageService;
             $imageServer->deleteImage($data->image);
             $data->delete();
             return response()->json(
                 [
-                   'status' =>'success',
-                   'message' => 'Successfully deleted'
-                ], Response::HTTP_OK
+                    'status' => 'success',
+                    'message' => 'Successfully deleted'
+                ],
+                Response::HTTP_OK
             );
-        }else{
+        } else {
             return response()->json(
                 [
                     'message' => 'Not found',
                     'data' => $data
-                ], Response::HTTP_BAD_REQUEST
+                ],
+                Response::HTTP_BAD_REQUEST
             );
         }
     }
-
-
-
 }

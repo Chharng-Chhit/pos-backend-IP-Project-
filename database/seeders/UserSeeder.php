@@ -40,42 +40,45 @@ class UserSeeder extends Seeder
             [
                 [
                     'name' => 'Chharng Chhit',
-                    'email' => 'admin@gmail.com',
-                    'phone' => '12345671',
+                    'email' => 'chharngchhit@gmail.com',
+                    'phone' => '085720085',
+                    'avatar' => 'pos/user/ChharngChhit.png',
                     'password' => bcrypt('123456'),
                     'users_type' => 1,
                     'created_at'    => Carbon::now(),
                     'updated_at'    => Carbon::now()
                 ],
                 [
-                    'name' => 'Chharng Chhit',
-                    'email' => 'admin1@gmail.com',
-                    'phone' => '12345672',
+                    'name' => 'Kang Eangchheang',
+                    'email' => 'Eangchheang@gmail.com',
+                    'phone' => '085720086',
+                    'avatar' => 'pos/user/Eangchheang.png',
                     'password' => bcrypt('123456'),
                     'users_type' => 2,
                     'created_at'    => Carbon::now(),
                     'updated_at'    => Carbon::now()
                 ],
                 [
-                    'name' => 'Chharng Chhit',
-                    'email' => 'admin2@gmail.com',
-                    'phone' => '12345673',
+                    'name' => 'Ek Moniroth',
+                    'email' => 'Moniroth@gmail.com',
+                    'phone' => '085720088',
+                    'avatar' => 'pos/user/user.png',
                     'password' => bcrypt('123456'),
                     'users_type' => 3,
                     'created_at'    => Carbon::now(),
                     'updated_at'    => Carbon::now()
                 ],
                 [
-                    'name' => 'Chharng Chhit',
-                    'email' => 'admin4@gmail.com',
-                    'phone' => '12345674',
+                    'name' => 'Doung Dariya',
+                    'email' => 'Dariya@gmail.com',
+                    'phone' => '088720072',
+                    'avatar' => 'pos/user/Dariya.png',
                     'password' => bcrypt('123456'),
                     'users_type' => 3,
                     'created_at'    => Carbon::now(),
                     'updated_at'    => Carbon::now()
                 ]
             ]
-                );
-
+        );
     }
 }

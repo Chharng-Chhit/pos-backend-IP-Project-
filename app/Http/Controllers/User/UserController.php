@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\User;
+
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -10,14 +11,15 @@ class UserController extends Controller
 {
     //
 
-    public function getUser(Request $req){
+    public function getUser(Request $req)
+    {
 
         // get the user
-        $users = User::with(['role' => function($query) {
+        $users = User::with(['role' => function ($query) {
             $query->select('id', 'name');
         }])
-        ->select('id', 'name', 'email', 'users_type', 'avatar', 'phone', 'loyalty_points', 'created_at', 'updated_at')
-        ->get();
+            ->select('id', 'name', 'email', 'users_type', 'avatar', 'phone', 'loyalty_points', 'created_at', 'updated_at')
+            ->get();
 
         return response()->json(
             [
@@ -28,17 +30,17 @@ class UserController extends Controller
         );
     }
 
-    public function getCustomer(Request $req){
+    public function getCustomer(Request $req)
+    {
 
         // get the customer
         $customer = new User();
         $customer = User::with(['role' => function ($customer) {
             $customer->select('id', 'name');
         }])
-        ->select('id', 'name', 'email', 'users_type', 'avatar', 'phone', 'loyalty_points','created_at', 'updated_at' )
-        ->where('users_type', '=', 3)
-        ->get();
-        ;
+            ->select('id', 'name', 'email', 'users_type', 'avatar', 'phone', 'loyalty_points', 'created_at', 'updated_at')
+            ->where('users_type', '=', 3)
+            ->get();;
 
         return response()->json(
             [
@@ -49,16 +51,16 @@ class UserController extends Controller
         );
     }
 
-    public function notCustomer(Request $req){
+    public function notCustomer(Request $req)
+    {
         // get the customer
         $customer = new User();
         $customer = User::with(['role' => function ($customer) {
             $customer->select('id', 'name');
         }])
-        ->select('id', 'name', 'email', 'users_type', 'avatar', 'phone', 'loyalty_points' )
-        ->where('users_type', '!=', 3)
-        ->get();
-        ;
+            ->select('id', 'name', 'email', 'users_type', 'avatar', 'phone', 'loyalty_points')
+            ->where('users_type', '!=', 3)
+            ->get();;
 
         return response()->json(
             [
@@ -66,6 +68,39 @@ class UserController extends Controller
                 "data"   => $customer
             ],
             Response::HTTP_OK
+        );
+    }
+
+    public function create(Request $req)
+    {
+        $req->validate(
+            [
+                "name" => "required|max:100",
+                "email" => "required|email|unique:users",
+                'phone' => 'required|numeric|digits_between:8,12',
+                "password" => "required|confirmed",
+                "users_type" => "required|not_in:1"
+            ],
+        );
+
+        // create a new user
+        $user = new User();
+        $user->name = $req->input('name');
+        $user->email = $req->input('email');
+        $user->password = bcrypt($req->input('password'));
+        $user->users_type = $req->input('users_type');
+        $user->phone = $req->input('phone');
+        $user->avatar = $req->input('avatar');
+        $user->loyalty_points = $req->input('loyalty_points');
+
+        $user->save();
+
+        return response()->json(
+            [
+                "message" => 'User created successfully',
+                "data"   => $user
+            ],
+            Response::HTTP_CREATED
         );
     }
 }

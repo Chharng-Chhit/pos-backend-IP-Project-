@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('users_type')->index()->unsigned();
             $table->foreign('users_type')->references('id')->on('users_type')->onDelete('cascade');
             $table->string('name', 50)->nullable();
-            $table->string('avatar', 100)->default('static/icon/user.png');
+            $table->string('avatar', 100)->default('pos/user/user.png');
             $table->string('phone', 50)->unique();
             $table->string('email')->unique();
             $table->integer('loyalty_points')->default(0);

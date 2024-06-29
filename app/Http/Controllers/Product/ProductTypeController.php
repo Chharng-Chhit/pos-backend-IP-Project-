@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Product;
+
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
@@ -13,55 +14,66 @@ class ProductTypeController extends Controller
     public function getData(Request $req)
     {
         $data = ProductsType::select('*')
-        ->withCount([
-            'product as amount'
-        ]);
+            ->withCount([
+                'product as amount'
+            ]);
 
         // ===>> Get data from DB
         $data = $data->orderBy('updated_at', 'DESC')
-        ->get();
+            ->get();
         // ===>> Return data to client
         return response()->json(
             [
                 'data' => $data
-            ], Response::HTTP_OK,
+            ],
+            Response::HTTP_OK,
         );
         // return $data;
     }
 
     // Search for products Type by ID
-    public function getById($req){
+    public function getById($req)
+    {
         $id = $req->getParam('id');
         $data = ProductsType::select('*')
-        ->withCount([
-            'product as amount'
-        ])
-        ->where('id', $id)
-        ->orderBy('updated_at', 'DESC')
-        ->get();
+            ->withCount([
+                'product as amount'
+            ])
+            ->where('id', $id)
+            ->orderBy('updated_at', 'DESC')
+            ->get();
         return response()->json(
             [
                 'data' => $data
-            ], Response::HTTP_OK,
+            ],
+            Response::HTTP_OK,
         );
     }
 
     // Search for products Type by Name
-    public function searchByName(Request $req){
+    public function searchByName(Request $req)
+    {
         $keyword = $req->input('id');
         $data = ProductsType::select('*')
-        ->withCount([
-            'product as amount'
-        ])
-        ->where('name', 'like', '%'.$keyword.'%')
-        ->orderBy('updated_at', 'DESC')
-        ->get();
+            ->withCount([
+                'product as amount'
+            ])
+            ->where('name', 'like', '%' . $keyword . '%')
+            ->orderBy('updated_at', 'DESC')
+            ->get();
+        if ($data) {
+            $status = "success";
+        } else {
+            $status = "not found";
+        }
         return response()->json(
             [
+                'message' =>  $status,
+                'keyword' => $keyword,
                 'data' => $data
-            ], Response::HTTP_OK,
+            ],
+            Response::HTTP_OK,
         );
-
     }
 
     public function create(Request $req)
@@ -75,7 +87,7 @@ class ProductTypeController extends Controller
 
         $image = $req->image;
 
-        if ($image){
+        if ($image) {
             $imageServer = new ImageService;
             $imagePath = $imageServer->uploadImage($data->name, 'product_type', $image);
             $data->icon = $imagePath;
@@ -86,32 +98,34 @@ class ProductTypeController extends Controller
                 'status' => 'success',
                 'message' => 'Successfully created',
                 'data' => $data
-            ], Response::HTTP_OK
+            ],
+            Response::HTTP_OK
         );
     }
 
-    public function update(Request $req){
+    public function update(Request $req)
+    {
         $id = $req->input('id');
         $req->validate([
-            'name' =>'required|max:50'
+            'name' => 'required|max:50'
         ]);
         $data = ProductsType::find($id);
         // return $data;
-        if($data){
+        if ($data) {
             $data->name = $req->name;
             $data->save();
 
             $image = $req->icon;
 
-            if ($image){
+            if ($image) {
                 $imageService = new ImageService;
 
-                if($data->icon !== ''){
+                if ($data->icon !== '') {
                     $imageService->deleteImage($data->icon);
                 }
                 $imagePath = $imageService->uploadImage($data->name, 'product_type', $image);
                 $data->icon = $imagePath;
-            }else{
+            } else {
                 $data->icon = $data->icon;
             }
             $data->save();
@@ -120,37 +134,42 @@ class ProductTypeController extends Controller
                     'status' => 'success',
                     'message' => 'Update image successfully',
                     'data' => $data
-                ], Response::HTTP_OK
+                ],
+                Response::HTTP_OK
             );
-        }else{
+        } else {
             return response()->json(
                 [
                     'message' => 'Not found',
-                ], Response::HTTP_BAD_REQUEST
+                ],
+                Response::HTTP_BAD_REQUEST
             );
         }
     }
 
-    public function delete(Request $req){
+    public function delete(Request $req)
+    {
         $id = $req->input('id');
         $data = ProductsType::find($id);
-        if($data){
+        if ($data) {
             $imageService = new ImageService;
-            if($data->icon!== ''){
+            if ($data->icon !== '') {
                 $imageService->deleteImage($data->icon);
             }
             $data->delete();
             return response()->json(
                 [
-                   'status' =>'success',
-                   'message' => 'Successfully deleted'
-                ], Response::HTTP_OK
+                    'status' => 'success',
+                    'message' => 'Successfully deleted'
+                ],
+                Response::HTTP_OK
             );
-        }else{
+        } else {
             return response()->json(
                 [
                     'message' => 'Not found',
-                ], Response::HTTP_BAD_REQUEST
+                ],
+                Response::HTTP_BAD_REQUEST
             );
         }
     }
