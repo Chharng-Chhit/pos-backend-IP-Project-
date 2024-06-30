@@ -26,14 +26,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post("register", [ApiController::class, "register"]);
 Route::post("login", [ApiController::class, "login"]);
 
-Route::group(["middleware" => ["auth:api"]], function(){
+Route::group(["middleware" => ["auth:api"]], function () {
 
     Route::get("profile", [ApiController::class, "profile"]);
     Route::get("refresh", [ApiController::class, "refreshToken"]);
     Route::get("logout", [ApiController::class, "logout"]);
+    Route::get('/profile', [ApiController::class, "profile"]);
 });
 
-Route::group(["middleware" => ["auth:api"], 'prefix' => 'product'], function(){
+Route::group(["middleware" => ["auth:api"], 'prefix' => 'product'], function () {
 
     // Product
     Route::get("/", [ProductController::class, "getData"]);
@@ -42,7 +43,7 @@ Route::group(["middleware" => ["auth:api"], 'prefix' => 'product'], function(){
     Route::get('/types/category', [ProductController::class, "getProductByCategory"]);
     Route::put('/update', [ProductController::class, "update"]);
     Route::delete('/delete', [ProductController::class, "delete"]);
-    Route::post('/', [ProductController::class,"create"]);
+    Route::post('/', [ProductController::class, "create"]);
 
 
     // Product type
@@ -51,16 +52,22 @@ Route::group(["middleware" => ["auth:api"], 'prefix' => 'product'], function(){
     Route::get('/type/search', [ProductTypeController::class, "searchByName"]);
     Route::put("/type/update", [ProductTypeController::class, "update"]);
     Route::delete("/type/delete", [ProductTypeController::class, "delete"]);
-
-
 });
 
-Route::group(["middleware" => "auth:api", 'prefix' => 'user'], function(){
+Route::group(["middleware" => "auth:api"], function () {
 
     // user
-    Route::get('/all', [UserController::class, 'getUser']);
+    Route::get('user', [UserController::class, 'getUser']);
     Route::get('/', [UserController::class, 'notCustomer']); // for get user that is not a customer
-    Route::get('/customers', [UserController::class, 'getCustomer']);
+    Route::get('user/all/customers', [UserController::class, 'getCustomer']);
+    Route::post('user/', [UserController::class, 'create']);
+
+    // Route::get('/user/{id}', 'view');
+    // Route::post('/user', 'create');
+    // Route::put('/user/{id}', 'update');
+    // Route::delete('/user/{id}', 'delete');
+    // Route::post('/user/{id}/change-password', 'changePassword');
+    // Route::post('/user/block/{id}', 'block');
 });
 
 

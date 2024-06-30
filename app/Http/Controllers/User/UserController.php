@@ -71,6 +71,24 @@ class UserController extends Controller
         );
     }
 
+    public function view($id)
+    {
+
+        $data = User::with(['role'])->find($id);
+
+        if (!$data) {
+            return response()->json([
+                'status'            => 'បរាជ័យ',
+                'message'           => 'ទិន្នន័យមិនត្រឹមត្រូវ! អ្នកប្រើប្រាស់មិនមានក្នុងប្រព័​ន្ធ',
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        return response()->json([
+            'status'            => 'ជោគជ័យ',
+            'data'              =>  $data,
+        ], Response::HTTP_OK);
+    }
+
     public function create(Request $req)
     {
         $req->validate(
@@ -90,9 +108,7 @@ class UserController extends Controller
         $user->password = bcrypt($req->input('password'));
         $user->users_type = $req->input('users_type');
         $user->phone = $req->input('phone');
-        $user->avatar = $req->input('avatar');
-        $user->loyalty_points = $req->input('loyalty_points');
-
+        $user->is_active = true;
         $user->save();
 
         return response()->json(
