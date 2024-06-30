@@ -57,9 +57,9 @@ Route::group(["middleware" => ["auth:api"], 'prefix' => 'product'], function () 
 Route::group(["middleware" => "auth:api"], function () {
 
     // user
-    Route::get('user', [UserController::class, 'getUser']);
-    Route::get('/', [UserController::class, 'notCustomer']); // for get user that is not a customer
-    Route::get('user/all/customers', [UserController::class, 'getCustomer']);
+    Route::get('user/all', [UserController::class, 'getUser']);
+    Route::get('user/', [UserController::class, 'notCustomer']); // for get user that is not a customer
+    Route::get('user/customers', [UserController::class, 'getCustomer']);
     Route::post('user/', [UserController::class, 'create']);
 
     // Route::get('/user/{id}', 'view');

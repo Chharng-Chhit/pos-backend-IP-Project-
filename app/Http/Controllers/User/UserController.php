@@ -58,7 +58,7 @@ class UserController extends Controller
         $customer = User::with(['role' => function ($customer) {
             $customer->select('id', 'name');
         }])
-            ->select('id', 'name', 'email', 'users_type', 'avatar', 'phone', 'loyalty_points')
+            ->select('id', 'name', 'email', 'users_type', 'avatar', 'phone', 'loyalty_points', 'created_at', 'updated_at')
             ->where('users_type', '!=', 3)
             ->get();;
 
