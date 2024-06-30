@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use App\Service\ImageService as ImageService;
+use Illuminate\Http\Response;
 
 class ImageController extends Controller
 {
@@ -24,7 +25,7 @@ class ImageController extends Controller
         $imageName = $request->input('name');
         $image = new ImageService();
 
-        if($groupImage && $imageName && $imageBase64){
+        if ($groupImage && $imageName && $imageBase64) {
             $filePath = $image->uploadImage($imageName, $groupImage, $imageBase64);
         }
 
@@ -41,7 +42,7 @@ class ImageController extends Controller
 
         // Check if the image path is provided
         if (!$path) {
-            return response()->json(['message' => 'Image path not provided'], 400);
+            return response()->json(['message' => 'Image path not provided'], Response::HTTP_BAD_REQUEST);
         }
 
         // Check if the image exists in MinIO
@@ -49,20 +50,21 @@ class ImageController extends Controller
             // Get the image content
             $image = Storage::disk('minio')->get($path);
 
-            // Convert the image content to base64
-            $imageBase64 = 'data:image/jpeg;base64,'. base64_encode($image);
-            // Return the base64 encoded image as response
-            return response()->json([
-                'image_base64' => $imageBase64,
-            ], 200);
+            // Convert the image to PNG using Intervention Image
+            // $img = Image::make($image)->encode('png');
+
+            // Return the PNG image file as response
+            return response($image, Response::HTTP_OK)
+                ->header('Content-Type', 'image/png');
         } else {
             // Image not found, return 404
-            return response()->json(['message' => 'Image not found'], 404);
+            return response()->json(['message' => 'Image not found'], Response::HTTP_NOT_FOUND);
         }
     }
 
     // delete Image
-    public function delete(Request $request){
+    public function delete(Request $request)
+    {
         $path = $request->input('image');
         $image = new ImageService();
 

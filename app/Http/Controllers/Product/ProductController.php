@@ -14,20 +14,25 @@ class ProductController extends Controller
 
     public function getData(Request $req)
     {
+        // Define the number of items per page
+        $perPage = 10;
 
-        // get all products
+        // Get all products with pagination
         $data = Product::with(['type' => function ($type) {
             $type->select('id', 'name');
         }])
-            ->select("*");;
+            ->select('*')
+            ->orderBy('updated_at', 'DESC')
+            ->paginate($perPage);
 
-        // ===>> Get data from DB
-        $data = $data->orderBy('updated_at', 'DESC')
-            ->get();
-        // ===>> Return data to client
+        // Return data to client with pagination information
         return response()->json([
             "message" => 'success',
-            "data"   => $data
+            "data"   => $data->items(),
+            "current_page" => $data->currentPage(),
+            "last_page" => $data->lastPage(),
+            "per_page" => $data->perPage(),
+            "total" => $data->total()
         ], Response::HTTP_OK);
     }
 
@@ -74,29 +79,35 @@ class ProductController extends Controller
     public function searchName(Request $req)
     {
         $key = $req->input('key');
+        $perPage = 10; // Define the number of items per page
+
         $data = Product::select('*')
             ->where(function ($query) use ($key) {
                 $query->where('name', 'like', '%' . $key . '%')
                     ->orWhere('code', 'like', '%' . $key . '%');
             })
             ->orderBy('updated_at', 'DESC')
-            ->get();
+            ->paginate($perPage); // Use paginate instead of get
 
-        if ($data) {
+        if ($data->count() > 0) {
             return response()->json(
                 [
                     'message'   => 'success',
                     'keywords' => $key,
-                    'data' => $data
+                    'data' => $data->items(),
+                    'current_page' => $data->currentPage(),
+                    'last_page' => $data->lastPage(),
+                    'per_page' => $data->perPage(),
+                    'total' => $data->total()
                 ],
-                Response::HTTP_OK,
+                Response::HTTP_OK
             );
         } else {
             return response()->json(
                 [
                     'message'   => 'Not Found',
                 ],
-                Response::HTTP_NOT_FOUND,
+                Response::HTTP_NOT_FOUND
             );
         }
     }
