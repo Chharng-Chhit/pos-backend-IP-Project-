@@ -174,6 +174,41 @@ class ProductController extends Controller
         );
     }
 
+    // add stock
+    public function addStock(Request $req)
+    {
+        $req->validate([
+            'qty' => 'required|numeric|min:1'
+        ]);
+
+        $id = $req->input('id');
+        $quantity = $req->qty;
+
+        $data = Product::find($id);
+
+        if ($data === null) {
+            return response()->json(
+                [
+                    'message' => 'Not found',
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        $data->in_stock += $quantity;
+        $data->save();
+
+
+        return response()->json(
+            [
+                'status' => 'success',
+                'message' => 'Stock added successfully',
+                'data' => $data
+            ],
+            Response::HTTP_OK
+        );
+    }
+
     // update product
     public function update(Request $req)
     {

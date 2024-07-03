@@ -56,16 +56,19 @@ class PosController extends Controller
     {
         $this->validate($req, [
             'cart'      => 'required|json',
-            'customer_id' => 'required|number',
+            'customer_id' => 'required|numeric',
         ]);
 
         $user = JWTAuth::parseToken()->authenticate();
 
+        // return $user;
         $order = new Order;
-        $order->user_id = $user->id;
+        $order->cashier_id = $user->id;
         $order->total_price = 0;
         $order->receipt_number = $this->generateReceiptNumber();
+        $order->customer_id = $req->customer_id;
         $order->save();
+
 
         $detail = [];
         $totalPrice = 0;
@@ -73,13 +76,22 @@ class PosController extends Controller
 
         foreach ($cart as $productId => $qty) {
             $product = Product::find($productId);
+
             if ($product) {
 
-                if ($qty < $product->in_stock) {
+                if ($product->in_stock == 0) {
+                    return response()->json([
+                        'status' => 'false',
+                        'message' => [
+                            'product_id' => 'Out of stock'
+                        ],
+                    ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                }
+                if ($qty > $product->in_stock) {
                     $detail = [
                         'order_id'     => $order->id,
                         'product_id'  => $product->id,
-                        'customer_id' => $req->customer_id,
+                        // 'customer_id' => $req->customer_id,
                         'qty'    => $product->in_stock,
                         'unit_price' => $product->unit_price,
                     ];
@@ -91,7 +103,7 @@ class PosController extends Controller
                     $detail = [
                         'order_id'     => $order->id,
                         'product_id'  => $product->id,
-                        'customer_id' => $req->customer_id,
+                        // 'customer_id' => $req->customer_id,
                         'qty'    => $qty,
                         'unit_price' => $product->unit_price,
                     ];
@@ -111,7 +123,7 @@ class PosController extends Controller
 
         $orderData = Order::select('*')
             ->with([
-                'cashier:id,name,type_id',
+                'cashier:id,name,users_type',
                 'cashier.role:id,name',
 
                 'details:id,order_id,product_id,unit_price,qty',

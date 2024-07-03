@@ -45,6 +45,7 @@ Route::group(["middleware" => ["auth:api"], 'prefix' => 'product'], function () 
     Route::put('/update', [ProductController::class, "update"]);
     Route::delete('/delete', [ProductController::class, "delete"]);
     Route::post('/', [ProductController::class, "create"]);
+    Route::post('/addStock', [ProductController::class, "addStock"]);
 
 
     // Product type
