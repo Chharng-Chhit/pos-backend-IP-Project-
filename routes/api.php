@@ -62,9 +62,12 @@ Route::group(["middleware" => "auth:api"], function () {
     Route::get('user/customers', [UserController::class, 'getCustomer']);
     Route::post('user/', [UserController::class, 'create']);
 
-    // Route::get('/user/{id}', 'view');
-    // Route::post('/user', 'create');
-    // Route::put('/user/{id}', 'update');
+    Route::get('/user/view/{id}', [UserController::class, 'view']);
+    Route::post('/user/create', [UserController::class, 'create']);
+    Route::put('/user/update', [UserController::class, 'update']);
+    Route::delete('/user/delete', [UserController::class, 'delete']);
+    Route::get('/user/search', [UserController::class, 'searchUser']);
+    Route::put('/user/changepassword', [UserController::class, 'changePassword']);
     // Route::delete('/user/{id}', 'delete');
     // Route::post('/user/{id}/change-password', 'changePassword');
     // Route::post('/user/block/{id}', 'block');

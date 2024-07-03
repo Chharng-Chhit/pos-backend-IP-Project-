@@ -1,11 +1,14 @@
 <?php
 
 namespace App\Service;
+
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class ImageService {
-    public function uploadImage($imageName, $groupImage, $base64Image){
+class ImageService
+{
+    public function uploadImage($imageName, $groupImage, $base64Image)
+    {
 
         // Check if the base64 string contains the correct data
         if (preg_match('/^data:image\/(\w+);base64,/', $base64Image, $type)) {

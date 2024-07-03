@@ -129,7 +129,7 @@ class ProductSeeder extends Seeder
                 "type_id"       => 1,
                 "name"          => 'Coca Cola 350ml',
                 "code"          => 'B0004',
-                "image"         => 'pos/product/Coca Cola.png',
+                "image"         => 'pos/product/Coca Cola1.png',
                 "unit_price"    => 1.5,
                 "created_at"    => Carbon::now(),
                 "updated_at"    => Carbon::now()
@@ -138,7 +138,7 @@ class ProductSeeder extends Seeder
                 "type_id"       => 2,
                 "name"          => 'Dutch Mill Pasturized Low Fat Milk',
                 "code"          => 'D0004',
-                "image"         => 'pos/product/Fat Milk.png',
+                "image"         => 'pos/product/Fat Milk1.png',
                 "unit_price"    => 3.5,
                 "created_at"    => Carbon::now(),
                 "updated_at"    => Carbon::now()
@@ -147,7 +147,7 @@ class ProductSeeder extends Seeder
                 "type_id"       => 2,
                 "name"          => 'E&V Unsalted Butter 200G',
                 "code"          => 'D0005',
-                "image"         => 'pos/product/Unsalted Butter.png',
+                "image"         => 'pos/product/Unsalted Butter1.png',
                 "unit_price"    => 2.25,
                 "created_at"    => Carbon::now(),
                 "updated_at"    => Carbon::now()
@@ -156,7 +156,7 @@ class ProductSeeder extends Seeder
                 "type_id"       => 2,
                 "name"          => 'Angkor beer 330ml',
                 "code"          => 'A0006',
-                "image"         => 'pos/product/Angkor beer.png',
+                "image"         => 'pos/product/Angkor beer1.png',
                 "unit_price"    => 1.95,
                 "created_at"    => Carbon::now(),
                 "updated_at"    => Carbon::now()
@@ -165,7 +165,7 @@ class ProductSeeder extends Seeder
                 "type_id"       => 5,
                 "name"          => 'Clear Men Shampoo Scalp Legend by ',
                 "code"          => 'C0007',
-                "image"         => 'pos/product/Clear Men.png',
+                "image"         => 'pos/product/Clear Men1.png',
                 "unit_price"    => 1.95,
                 "created_at"    => Carbon::now(),
                 "updated_at"    => Carbon::now()
@@ -174,7 +174,7 @@ class ProductSeeder extends Seeder
                 "type_id"       => 3,
                 "name"          => 'Giraffe Spiral Notebook A5',
                 "code"          => 'S0008',
-                "image"         => 'pos/product/Notebook.png',
+                "image"         => 'pos/product/Notebook1.png',
                 "unit_price"    => 0.95,
                 "created_at"    => Carbon::now(),
                 "updated_at"    => Carbon::now()
@@ -183,7 +183,7 @@ class ProductSeeder extends Seeder
                 "type_id"       => 2,
                 "name"          => 'Carne Meats Raw Ribeye Steak',
                 "code"          => 'S0009',
-                "image"         => 'pos/product/Raw Meats.png',
+                "image"         => 'pos/product/Raw Meats1.png',
                 "unit_price"    => 0.95,
                 "created_at"    => Carbon::now(),
                 "updated_at"    => Carbon::now()
@@ -192,7 +192,7 @@ class ProductSeeder extends Seeder
                 "type_id"       => 2,
                 "name"          => 'SAMYANG Samyang Hot ',
                 "code"          => 'S0010',
-                "image"         => 'pos/product/SamYang.png',
+                "image"         => 'pos/product/SamYang1.png',
                 "unit_price"    => 0.95,
                 "created_at"    => Carbon::now(),
                 "updated_at"    => Carbon::now()

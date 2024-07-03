@@ -13,18 +13,19 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 class ApiController extends Controller
 {
     // User Register (POST, formdata)
-    public function register(Request $request){
+    public function register(Request $request)
+    {
 
         // data validation
         $request->validate(
             [
-            "name" => "required|max:100",
-            "email" => "required|email|unique:users",
-            'phone' => 'required|numeric|digits_between:8,12',
-            "password" => "required|confirmed",
-            "users_type" => "required"
-        ],
-    );
+                "name" => "required|max:100",
+                "email" => "required|email|unique:users",
+                'phone' => 'required|numeric|digits_between:8,12',
+                "password" => "required|confirmed",
+                "users_type" => "required"
+            ],
+        );
 
         // User Model
         User::create([
@@ -42,7 +43,8 @@ class ApiController extends Controller
         ]);
     }
 
-    public function login(Request $request){
+    public function login(Request $request)
+    {
 
         // data validation
         $request->validate([
@@ -59,7 +61,7 @@ class ApiController extends Controller
                 "password" => $request->password
             ]);
 
-            if(!empty($token)) {
+            if (!empty($token)) {
                 // Authentication successful, retrieve user data
                 $user = auth()->user();
                 $userData = User::with('role')->find($user->id);
@@ -69,27 +71,26 @@ class ApiController extends Controller
                     "message" => "User logged in successfully",
                     "data" => $userData,
                     "token" => $token
-                ],Response::HTTP_OK);
-            }
-            else {
+                ], Response::HTTP_OK);
+            } else {
                 // Authentication failed, return appropriate error message
                 return response()->json([
                     "status" => false,
                     "message" => "Wrong email or password"
                 ], Response::HTTP_UNAUTHORIZED); // HTTP 401 Unauthorized status code for authentication failure
             }
-        } catch(JWTException $e){
+        } catch (JWTException $e) {
             return response()->json([
                 "status" => false,
                 "message" => "Cannot Login"
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
     }
 
 
     // User Profile (GET)
-    public function profile(){
+    public function profile()
+    {
 
         $userdata = auth()->user();
 
@@ -102,7 +103,8 @@ class ApiController extends Controller
     }
 
     // To generate refresh token value
-    public function refreshToken(){
+    public function refreshToken()
+    {
 
         $newToken = auth()->refresh();
 
@@ -114,7 +116,8 @@ class ApiController extends Controller
     }
 
     // User Logout (GET)
-    public function logout(){
+    public function logout()
+    {
 
         auth()->logout();
 
