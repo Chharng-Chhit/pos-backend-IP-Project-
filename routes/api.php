@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\Product\ProductTypeController;
 use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\Pos\PosController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\User\UserController;
 
@@ -68,9 +69,11 @@ Route::group(["middleware" => "auth:api"], function () {
     Route::delete('/user/delete', [UserController::class, 'delete']);
     Route::get('/user/search', [UserController::class, 'searchUser']);
     Route::put('/user/changepassword', [UserController::class, 'changePassword']);
-    // Route::delete('/user/{id}', 'delete');
-    // Route::post('/user/{id}/change-password', 'changePassword');
-    // Route::post('/user/block/{id}', 'block');
+});
+
+Route::group(["middleware" => ["auth:api"], 'prefix' => 'pos'], function () {
+    Route::get('/products',     [PosController::class, 'getProducts']); // Read all records
+    Route::post('/order',       [PosController::class, 'makeOrder']); // Create new order
 });
 
 

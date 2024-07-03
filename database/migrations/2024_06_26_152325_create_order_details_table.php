@@ -23,8 +23,6 @@ class CreateOrderDetailsTable extends Migration
             $table->integer('product_id')->index()->unsigned();
             $table->foreign('product_id')->references('id')->on('product')->onDelete('cascade');
 
-            $table->integer('customer_id')->index()->unsigned();
-            $table->foreign('customer_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->double('unit_price')->nullable();
             $table->integer('qty')->unsigned()->default(0);

@@ -21,7 +21,8 @@ class CreateOrderTable extends Migration
 
             $table->integer('cashier_id')->index()->unsigned();
             $table->foreign('cashier_id')->references('id')->on('users')->onDelete('cascade');
-
+            $table->integer('customer_id')->index()->unsigned();
+            $table->foreign('customer_id')->references('id')->on('users')->onDelete('cascade');
             $table->double('total_price')->nullable();
             $table->dateTime('ordered_at')->nullable();
 

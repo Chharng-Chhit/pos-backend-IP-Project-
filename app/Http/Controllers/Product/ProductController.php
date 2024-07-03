@@ -81,7 +81,9 @@ class ProductController extends Controller
         $key = $req->input('key');
         $perPage = 10; // Define the number of items per page
 
-        $data = Product::select('*')
+        $data = Product::select('*')->with(['type' => function ($type) {
+            $type->select('id', 'name');
+        }])
             ->where(function ($query) use ($key) {
                 $query->where('name', 'like', '%' . $key . '%')
                     ->orWhere('code', 'like', '%' . $key . '%');
