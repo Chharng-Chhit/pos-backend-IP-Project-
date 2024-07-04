@@ -36,6 +36,7 @@ class DashboardController extends Controller
 
         // Total sales amount for today
         $totalSaleToday = Order::where('ordered_at', '>=', $startOfDay)->sum('total_price');
+        // $totalSaleToday = number_format($totalSaleToday, 2);
 
         // Count of unique customers who made purchases today
         $customersCountToday = Order::where('ordered_at', '>=', $startOfDay)
@@ -46,11 +47,12 @@ class DashboardController extends Controller
         $saleCountToday = Order::where('ordered_at', '>=', $startOfDay)
             ->distinct('receipt_number')
             ->count('receipt_number');
+        // $saleCountToday = number_format($saleCountToday);
 
         return response()->json([
-            'total_sale' => $totalSaleToday,
-            'CustomersCount' => $customersCountToday,
-            'Sale'          => $saleCountToday
+            'total_sale' => number_format($totalSaleToday),
+            'CustomersCount' => number_format($customersCountToday),
+            'Sale'          => number_format($saleCountToday)
             // 'total_sale_today' => $totalSaleToday,
             // 'customers_count_today' => $customersCountToday,
             // 'sale_count_today' => $saleCountToday,
@@ -69,15 +71,15 @@ class DashboardController extends Controller
             ->distinct('customer_id')
             ->count('customer_id');
 
+        // $totalSaleThisMonth = number_format($totalSaleThisMonth, 2);
         // Count of sales made this month
         $saleCountThisMonth = Order::where('ordered_at', '>=', $startOfMonth)
             ->distinct('receipt_number')
             ->count('receipt_number');
-
         return response()->json([
-            'total_sale' => $totalSaleThisMonth,
-            'CustomersCount' => $customersCountThisMonth,
-            'Sale'          => $saleCountThisMonth
+            'total_sale' => number_format($totalSaleThisMonth, 2),
+            'CustomersCount' => number_format($customersCountThisMonth),
+            'Sale'          => number_format($saleCountThisMonth)
         ], Response::HTTP_OK);
     }
     public function getDashboardLastMonth()
