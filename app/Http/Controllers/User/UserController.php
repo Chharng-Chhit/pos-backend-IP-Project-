@@ -16,59 +16,57 @@ class UserController extends Controller
 
     public function getUser(Request $req)
     {
-
         // get the user
         $users = User::with(['role' => function ($query) {
             $query->select('id', 'name');
         }])
             ->select('id', 'name', 'email', 'users_type', 'avatar', 'phone', 'loyalty_points', 'created_at', 'updated_at')
-            ->get();
+            ->paginate(10); // Add pagination
 
         return response()->json(
             [
                 "message" => 'success',
-                "data"   => $users
+                "data"    => $users
             ],
             Response::HTTP_OK
         );
     }
+
 
     public function getCustomer(Request $req)
     {
-
         // get the customer
-        $customer = new User();
-        $customer = User::with(['role' => function ($customer) {
-            $customer->select('id', 'name');
+        $customers = User::with(['role' => function ($query) {
+            $query->select('id', 'name');
         }])
             ->select('id', 'name', 'email', 'users_type', 'avatar', 'phone', 'loyalty_points', 'created_at', 'updated_at')
             ->where('users_type', '=', 3)
-            ->get();;
+            ->paginate(10); // Add pagination
 
         return response()->json(
             [
                 "message" => 'success',
-                "data"   => $customer
+                "data"    => $customers
             ],
             Response::HTTP_OK
         );
     }
+
 
     public function notCustomer(Request $req)
     {
         // get the customer
-        $customer = new User();
-        $customer = User::with(['role' => function ($customer) {
-            $customer->select('id', 'name');
+        $customers = User::with(['role' => function ($query) {
+            $query->select('id', 'name');
         }])
             ->select('id', 'name', 'email', 'users_type', 'avatar', 'phone', 'loyalty_points', 'created_at', 'updated_at')
             ->where('users_type', '!=', 3)
-            ->get();;
+            ->paginate(10); // Add pagination
 
         return response()->json(
             [
                 "message" => 'success',
-                "data"   => $customer
+                "data"    => $customers
             ],
             Response::HTTP_OK
         );
