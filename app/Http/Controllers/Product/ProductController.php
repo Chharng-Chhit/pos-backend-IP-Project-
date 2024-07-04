@@ -36,16 +36,6 @@ class ProductController extends Controller
         ], Response::HTTP_OK);
     }
 
-    // public function getProductByCategory(Request $req)
-    // {
-    //     $id = $req->input('id');
-    //     $data = Product::with('tpye')->select("*")->where('type_id', $id)->orderBy('updated_at', 'DESC')->get();
-    //     return response()->json([
-    //         "message" => 'success',
-    //         "getBy" => "category",
-    //         "data"   => $data
-    //     ], Response::HTTP_OK);
-    // }
     public function getProductByCategory(Request $req)
     {
         $key = $req->input('id');
@@ -250,7 +240,7 @@ class ProductController extends Controller
             'name'  => 'required|max:100',
             'code'  => 'required|max:20',
             'type_id' => 'required|numeric',
-            'unit_price'    => 'required|numeric|min:1000, max:1000000'
+            'unit_price'    => 'required|numeric'
         ]);
         $id = $req->input('id');
 
