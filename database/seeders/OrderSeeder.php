@@ -65,7 +65,6 @@ class OrderSeeder extends Seeder
             // Increment the last receipt number by 1
             $newNumber = $lastReceipt->receipt_number + 1;
         } else {
-            // If no receipt number exists, start with a base 8-digit number
             $newNumber = 1000000;
         }
 

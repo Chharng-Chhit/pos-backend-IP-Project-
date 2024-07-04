@@ -8,6 +8,8 @@ use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Pos\PosController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\Sale\SaleController;
+use App\Http\Controllers\Dashboard\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,6 +79,14 @@ Route::group(["middleware" => ["auth:api"], 'prefix' => 'pos'], function () {
     Route::post('/order',       [PosController::class, 'makeOrder']); // Create new order
 });
 
+Route::group(["middleware" => ["auth:api"], 'prefix' => 'sale'], function () {
+    Route::get("/", [SaleController::class, 'getData']);
+});
+Route::group(["middleware" => ["auth:api"], 'prefix' => 'dasboard'], function () {
+    Route::get("/", [DashboardController::class, 'getDashboard']);
+    Route::get("/thisMonth", [DashboardController::class, 'getDashboardThisMonth']);
+    Route::get("/lastMonth", [DashboardController::class, 'getDashboardLastMonth']);
+});
 
 Route::get("/getdata", [ProductTypeController::class, "getData"]);
 Route::get('/getImage', [ImageController::class, 'getImage']);

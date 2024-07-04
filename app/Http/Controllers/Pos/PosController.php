@@ -9,6 +9,7 @@ use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\UsersType;
+use App\Service\TelegramService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -51,6 +52,47 @@ class PosController extends Controller
         $user->save();
         // return $user->loyalty_points;
     }
+    private function _sendNotification($orderData)
+    {
+        $htmlMessage = "<b>Your order is sucessful!</b>\n";
+        $htmlMessage = "- Receipt number: " . $orderData->receipt_number . "\n";
+        $htmlMessage = "- Cashier: " . $orderData->cashier->name;
+
+        $productList  = '';
+        $totalProduct = 0;
+
+        foreach ($orderData->details as $detail) {
+            $productList .= sprintf(
+                "%-20s | %-15s | %-10s | %s\n",
+                $detail->product->name,
+                $detail->unit_price,
+                $detail->qty,
+                PHP_EOL
+            );
+            // $productLists = $productList;
+            $totalProduct += $detail->qty;
+        }
+
+        $htmlMessage .= "\n---------------------------------------\n";
+        $htmlMessage .= "Product             | Price($)     | Quantity\n";
+        $htmlMessage .= $productList . "\n";
+        $htmlMessage .= "<b>* Total product:</b> $totalProduct total $orderData->total_price $\n";
+        $htmlMessage .= "- Date: " . $orderData->ordered_at;
+
+        TelegramService::sendMessage($htmlMessage);
+    }
+    private function _stockNotification($cart)
+    {
+        $htmlMessage = "<b>Stock Notification Alert!</b>\n\n";
+
+        foreach ($cart as $item) {
+            $product = Product::find($item);
+            if ($product->in_stock <= 20) {
+                $htmlMessage .= "- Product: " . $product->name . " is out of stock. Remaining stock: " . $product->in_stock . "\n";
+                TelegramService::sendMessage($htmlMessage);
+            }
+        }
+    }
 
     public function makeOrder(Request $req)
     {
@@ -83,7 +125,8 @@ class PosController extends Controller
                     return response()->json([
                         'status' => 'false',
                         'message' => [
-                            'product_id' => 'Out of stock'
+                            'product' => $product->name,
+                            'message' => 'Out of stock',
                         ],
                     ], Response::HTTP_INTERNAL_SERVER_ERROR);
                 }
@@ -95,7 +138,7 @@ class PosController extends Controller
                         'qty'    => $product->in_stock,
                         'unit_price' => $product->unit_price,
                     ];
-                    $totalPrice += $qty * $product->unit_price;
+                    $totalPrice += $product->in_stock * $product->unit_price;
                     OrderDetail::insert($detail);
                     $product->in_stock -= $product->in_stock;
                     $this->addPoint($totalPrice, $req->customer_id);
@@ -133,7 +176,7 @@ class PosController extends Controller
             ->find($order->id);
 
         // ===>> Send notification
-        // $this->_sendNotification($orderData);
+        $this->_stockNotification($cart);
 
         return response()->json([
             'order'     => $orderData,

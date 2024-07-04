@@ -28,6 +28,11 @@ class Order extends Model
         return $this->belongsTo(User::class, 'cashier_id')
             ->select('id', 'name');
     }
+    public function customer() // M:1
+    {
+        return $this->belongsTo(User::class, 'customer_id')
+            ->select('id', 'name', 'phone', 'email');
+    }
 
     public function details() // 1:M
     {

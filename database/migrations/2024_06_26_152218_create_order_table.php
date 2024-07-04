@@ -18,7 +18,6 @@ class CreateOrderTable extends Migration
             $table->increments('id', true);
 
             $table->integer('receipt_number')->unsigned()->nullable();
-
             $table->integer('cashier_id')->index()->unsigned();
             $table->foreign('cashier_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('customer_id')->index()->unsigned();
