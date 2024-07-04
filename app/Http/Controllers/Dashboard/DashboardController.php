@@ -15,16 +15,6 @@ use App\Models\Order;
 
 class DashboardController extends Controller
 {
-    // public function getDashboard()
-    // {
-
-    //     $totalSaleToday = Order::sum('total_price');
-
-    //     $data = [
-    //         'total_sale_today' => $totalSaleToday
-    //     ];
-    //     return response()->json($data, Response::HTTP_OK);
-    // }
 
     public function getDashboard()
     {

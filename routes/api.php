@@ -85,6 +85,7 @@ Route::group(["middleware" => ["auth:api"], 'prefix' => 'sale'], function () {
 Route::group(["middleware" => ["auth:api"], 'prefix' => 'dasboard'], function () {
     Route::get("/", [DashboardController::class, 'getDashboard']);
     Route::get("/thisMonth", [DashboardController::class, 'getDashboardThisMonth']);
+    Route::get("/today", [DashboardController::class, 'getDashboardToday']);
     Route::get("/lastMonth", [DashboardController::class, 'getDashboardLastMonth']);
 });
 
