@@ -24,9 +24,9 @@ class DashboardController extends Controller
         $SaleCount = Order::distinct('receipt_number')->count('receipt_number');
 
         return response()->json([
-            'total_sale' => $totalSale,
-            'CustomersCount' => $CustomersCount,
-            'Sale'          => $SaleCount
+            'total_sale' => number_format($totalSale),
+            'CustomersCount' => number_format($CustomersCount),
+            'Sale'          => number_format($SaleCount)
         ], Response::HTTP_OK);
     }
 
@@ -101,9 +101,9 @@ class DashboardController extends Controller
             ->count('receipt_number');
 
         return response()->json([
-            'total_sale' => $totalSaleLastMonth,
-            'CustomersCount' => $customersCountLastMonth,
-            'Sale'          => $saleCountLastMonth
+            'total_sale' => number_format($totalSaleLastMonth, 2),
+            'CustomersCount' => number_format($customersCountLastMonth),
+            'Sale'          => number_format($saleCountLastMonth)
         ], Response::HTTP_OK);
     }
 }
