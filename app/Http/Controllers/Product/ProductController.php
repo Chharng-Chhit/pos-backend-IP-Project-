@@ -54,7 +54,7 @@ class ProductController extends Controller
         $data = Product::select('*')->with(['type' => function ($type) {
             $type->select('id', 'name');
         }])
-            ->where('type_id', $key)->get()
+            ->where('type_id', $key)
             ->orderBy('updated_at', 'DESC')
             ->paginate($perPage); // Use paginate instead of get
 
