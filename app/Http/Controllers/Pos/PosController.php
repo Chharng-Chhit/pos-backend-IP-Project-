@@ -52,35 +52,7 @@ class PosController extends Controller
         $user->save();
         // return $user->loyalty_points;
     }
-    private function _sendNotification($orderData)
-    {
-        $htmlMessage = "<b>Your order is sucessful!</b>\n";
-        $htmlMessage = "- Receipt number: " . $orderData->receipt_number . "\n";
-        $htmlMessage = "- Cashier: " . $orderData->cashier->name;
 
-        $productList  = '';
-        $totalProduct = 0;
-
-        foreach ($orderData->details as $detail) {
-            $productList .= sprintf(
-                "%-20s | %-15s | %-10s | %s\n",
-                $detail->product->name,
-                $detail->unit_price,
-                $detail->qty,
-                PHP_EOL
-            );
-            // $productLists = $productList;
-            $totalProduct += $detail->qty;
-        }
-
-        $htmlMessage .= "\n---------------------------------------\n";
-        $htmlMessage .= "Product             | Price($)     | Quantity\n";
-        $htmlMessage .= $productList . "\n";
-        $htmlMessage .= "<b>* Total product:</b> $totalProduct total $orderData->total_price $\n";
-        $htmlMessage .= "- Date: " . $orderData->ordered_at;
-
-        TelegramService::sendMessage($htmlMessage);
-    }
     private function _stockNotification($cart)
     {
         $htmlMessage = "<b>Stock Notification Alert!</b>\n\n";

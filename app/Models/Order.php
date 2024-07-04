@@ -31,7 +31,7 @@ class Order extends Model
     public function customer() // M:1
     {
         return $this->belongsTo(User::class, 'customer_id')
-            ->select('id', 'name', 'phone', 'email');
+            ->select('id', 'name', 'phone', 'email', 'loyalty_points');
     }
 
     public function details() // 1:M

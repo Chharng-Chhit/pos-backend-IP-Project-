@@ -10,6 +10,7 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Sale\SaleController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Sale\PrintController;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,10 +78,12 @@ Route::group(["middleware" => "auth:api"], function () {
 Route::group(["middleware" => ["auth:api"], 'prefix' => 'pos'], function () {
     Route::get('/products',     [PosController::class, 'getProducts']); // Read all records
     Route::post('/order',       [PosController::class, 'makeOrder']); // Create new order
+
 });
 
 Route::group(["middleware" => ["auth:api"], 'prefix' => 'sale'], function () {
     Route::get("/", [SaleController::class, 'getData']);
+    Route::get('/print/{receipt_number}',   [PrintController::class, 'printInvoice']);
 });
 Route::group(["middleware" => ["auth:api"], 'prefix' => 'dasboard'], function () {
     Route::get("/", [DashboardController::class, 'getDashboard']);
