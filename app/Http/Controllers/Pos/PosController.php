@@ -53,17 +53,21 @@ class PosController extends Controller
         // return $user->loyalty_points;
     }
 
-    private function _stockNotification($cart)
+    private function _stockNotification($productId)
     {
         $htmlMessage = "<b>Stock Notification Alert!</b>\n\n";
 
-        foreach ($cart as $item) {
-            $product = Product::find($item);
-            if ($product->in_stock <= 20) {
-                $htmlMessage .= "- Product: " . $product->name . " is out of stock. Remaining stock: " . $product->in_stock . "\n";
-                TelegramService::sendMessage($htmlMessage);
-            }
+        // foreach ($cart as $item) {
+        $product = Product::with('type')->find($productId);
+        if ($product->in_stock <= 20) {
+            $htmlMessage .= "- Product ID: " . $product->id .
+                "\n- Product: " . $product->name .
+                "\n- Type: " . $product->type->name .
+                "\n- Name: " . $product->name .
+                " \nis out of stock. Remaining stock: " . $product->in_stock . "\n";
+            TelegramService::sendMessage($htmlMessage);
         }
+        // }
     }
 
     public function makeOrder(Request $req)
@@ -89,6 +93,7 @@ class PosController extends Controller
         $cart = json_decode($req->cart);
 
         foreach ($cart as $productId => $qty) {
+            $product = [];
             $product = Product::find($productId);
 
             if ($product) {
@@ -109,12 +114,18 @@ class PosController extends Controller
                         // 'customer_id' => $req->customer_id,
                         'qty'    => $product->in_stock,
                         'unit_price' => $product->unit_price,
+
                     ];
                     $totalPrice += $product->in_stock * $product->unit_price;
                     OrderDetail::insert($detail);
-                    $product->in_stock -= $product->in_stock;
+                    $product->in_stock = 0;
                     $this->addPoint($totalPrice, $req->customer_id);
-                } else {
+                    $product->save();
+                    $this->_stockNotification($product->id);
+                    // return $product;
+                }
+                if ($qty <= $product->in_stock) {
+                    // return $qty;
                     $detail = [
                         'order_id'     => $order->id,
                         'product_id'  => $product->id,
@@ -126,9 +137,11 @@ class PosController extends Controller
                     OrderDetail::insert($detail);
                     $product->in_stock -= $qty;
                     $this->addPoint($totalPrice, $req->customer_id);
+                    $product->save();
+                    $this->_stockNotification($product->id);
                 }
-                $product->save();
             }
+            // return $product;
         }
 
 
@@ -148,7 +161,7 @@ class PosController extends Controller
             ->find($order->id);
 
         // ===>> Send notification
-        $this->_stockNotification($cart);
+        // $this->_stockNotification($cart);
 
         return response()->json([
             'order'     => $orderData,
