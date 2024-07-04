@@ -15,42 +15,75 @@ class UserController extends Controller
     //
 
     public function getUser(Request $req)
-    {
-        // get the user
-        $users = User::with(['role' => function ($query) {
-            $query->select('id', 'name');
-        }])
-            ->select('id', 'name', 'email', 'users_type', 'avatar', 'phone', 'loyalty_points', 'created_at', 'updated_at')
-            ->paginate(10); // Add pagination
+{
+    // get the user
+    $users = User::with(['role' => function ($query) {
+        $query->select('id', 'name');
+    }])
+        ->select('id', 'name', 'email', 'users_type', 'avatar', 'phone', 'loyalty_points', 'created_at', 'updated_at')
+        ->orderBy('updated_at', 'DESC')
+        ->paginate(10); // Add pagination
 
-        return response()->json(
-            [
-                "message" => 'success',
-                "data"    => $users
-            ],
-            Response::HTTP_OK
-        );
-    }
+    return response()->json(
+        [
+            "message" => 'success',
+            "data"    => $users->items(),
+            "current_page" => $users->currentPage(),
+            "last_page" => $users->lastPage(),
+            "per_page" => $users->perPage(),
+            "total" => $users->total()
+        ],
+        Response::HTTP_OK
+    );
+}
+    // public function getData(Request $req)
+    // {
+    //     // Define the number of items per page
+    //     $perPage = 10;
+
+    //     // Get all products with pagination
+    //     $data = Product::with(['type' => function ($type) {
+    //         $type->select('id', 'name');
+    //     }])
+    //         ->select('*')
+    //         ->orderBy('updated_at', 'DESC')
+    //         ->paginate($perPage);
+
+    //     // Return data to client with pagination information
+    //     return response()->json([
+    //         "message" => 'success',
+    //         "data"   => $data->items(),
+    //         "current_page" => $data->currentPage(),
+    //         "last_page" => $data->lastPage(),
+    //         "per_page" => $data->perPage(),
+    //         "total" => $data->total()
+    //     ], Response::HTTP_OK);
+    // }
 
 
     public function getCustomer(Request $req)
-    {
-        // get the customer
-        $customers = User::with(['role' => function ($query) {
-            $query->select('id', 'name');
-        }])
-            ->select('id', 'name', 'email', 'users_type', 'avatar', 'phone', 'loyalty_points', 'created_at', 'updated_at')
-            ->where('users_type', '=', 3)
-            ->paginate(10); // Add pagination
+{
+    // get the customer
+    $customers = User::with(['role' => function ($query) {
+        $query->select('id', 'name');
+    }])
+        ->select('id', 'name', 'email', 'users_type', 'avatar', 'phone', 'loyalty_points', 'created_at', 'updated_at')
+        ->where('users_type', '=', 3)
+        ->orderBy('updated_at', 'DESC') // Add orderBy to sort by updated_at
+        ->paginate(10); // Add pagination
 
-        return response()->json(
-            [
-                "message" => 'success',
-                "data"    => $customers
-            ],
-            Response::HTTP_OK
-        );
-    }
+    return response()->json(
+        [
+            "message" => 'success',
+            "data"    => $customers->items(),
+            "current_page" => $customers->currentPage(),
+            "last_page" => $customers->lastPage(),
+            "per_page" => $customers->perPage(),
+            "total" => $customers->total()
+        ],
+        Response::HTTP_OK
+    );
+}
 
 
     public function notCustomer(Request $req)
@@ -63,13 +96,17 @@ class UserController extends Controller
             ->where('users_type', '!=', 3)
             ->paginate(10); // Add pagination
 
-        return response()->json(
-            [
-                "message" => 'success',
-                "data"    => $customers
-            ],
-            Response::HTTP_OK
-        );
+            return response()->json(
+                [
+                    "message" => 'success',
+                    "data"    => $customers->items(),
+                    "current_page" => $customers->currentPage(),
+                    "last_page" => $customers->lastPage(),
+                    "per_page" => $customers->perPage(),
+                    "total" => $customers->total()
+                ],
+                Response::HTTP_OK
+            );
     }
 
     public function view($id)
@@ -249,9 +286,12 @@ class UserController extends Controller
         if ($data != '') {
             return response()->json(
                 [
-                    'message'   => 'success',
-                    'keywords' => $key,
-                    'User' => $data,
+                    "message" => 'success',
+                    "data"    => $users->items(),
+                    "current_page" => $users->currentPage(),
+                    "last_page" => $users->lastPage(),
+                    "per_page" => $users->perPage(),
+                    "total" => $users->total()
                 ],
                 Response::HTTP_OK
             );
