@@ -36,15 +36,49 @@ class ProductController extends Controller
         ], Response::HTTP_OK);
     }
 
+    // public function getProductByCategory(Request $req)
+    // {
+    //     $id = $req->input('id');
+    //     $data = Product::with('tpye')->select("*")->where('type_id', $id)->orderBy('updated_at', 'DESC')->get();
+    //     return response()->json([
+    //         "message" => 'success',
+    //         "getBy" => "category",
+    //         "data"   => $data
+    //     ], Response::HTTP_OK);
+    // }
     public function getProductByCategory(Request $req)
     {
-        $id = $req->input('id');
-        $data = Product::select("*")->where('type_id', $id)->orderBy('updated_at', 'DESC')->get();
-        return response()->json([
-            "message" => 'success',
-            "getBy" => "category",
-            "data"   => $data
-        ], Response::HTTP_OK);
+        $key = $req->input('id');
+        $perPage = 10; // Define the number of items per page
+
+        $data = Product::select('*')->with(['type' => function ($type) {
+            $type->select('id', 'name');
+        }])
+            ->where('type_id', $key)->get()
+            ->orderBy('updated_at', 'DESC')
+            ->paginate($perPage); // Use paginate instead of get
+
+        if ($data->count() > 0) {
+            return response()->json(
+                [
+                    'message'   => 'success',
+                    'keywords' => $key,
+                    'data' => $data->items(),
+                    'current_page' => $data->currentPage(),
+                    'last_page' => $data->lastPage(),
+                    'per_page' => $data->perPage(),
+                    'total' => $data->total()
+                ],
+                Response::HTTP_OK
+            );
+        } else {
+            return response()->json(
+                [
+                    'message'   => 'Not Found',
+                ],
+                Response::HTTP_NOT_FOUND
+            );
+        }
     }
 
 
@@ -121,7 +155,7 @@ class ProductController extends Controller
             'name'  => 'required|max:100',
             'code'  => 'required|max:20',
             'type_id' => 'required|numeric',
-            'unit_price'    => 'required|numeric|min:1000, max:1000000',
+            'unit_price'    => 'required|numeric',
         ]);
 
         $productType = ProductsType::find($req->type_id);
