@@ -109,20 +109,21 @@ class UserController extends Controller
             );
     }
 
-    public function view($id)
+    public function view(Request $req)
     {
 
+        $id = $req->input('id');
         $data = User::with(['role'])->find($id);
 
         if (!$data) {
             return response()->json([
-                'status'            => 'បរាជ័យ',
-                'message'           => 'ទិន្នន័យមិនត្រឹមត្រូវ! អ្នកប្រើប្រាស់មិនមានក្នុងប្រព័​ន្ធ',
+                'status'            => 'success',
+                'message'           => 'not found',
             ], Response::HTTP_BAD_REQUEST);
         }
 
         return response()->json([
-            'status'            => 'ជោគជ័យ',
+            'status'            => 'success',
             'data'              =>  $data,
         ], Response::HTTP_OK);
     }

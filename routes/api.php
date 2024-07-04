@@ -67,7 +67,7 @@ Route::group(["middleware" => "auth:api"], function () {
     Route::get('user/customers', [UserController::class, 'getCustomer']);
     Route::post('user/', [UserController::class, 'create']);
 
-    Route::get('/user/view/{id}', [UserController::class, 'view']);
+    Route::get('/user/view', [UserController::class, 'view']);
     Route::post('/user/create', [UserController::class, 'create']);
     Route::put('/user/update', [UserController::class, 'update']);
     Route::delete('/user/delete', [UserController::class, 'delete']);
