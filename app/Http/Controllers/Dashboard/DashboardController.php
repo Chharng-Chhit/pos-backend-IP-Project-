@@ -24,7 +24,7 @@ class DashboardController extends Controller
         $SaleCount = Order::distinct('receipt_number')->count('receipt_number');
 
         return response()->json([
-            'total_sale_today' => $totalSale,
+            'total_sale' => $totalSale,
             'CustomersCount' => $CustomersCount,
             'Sale'          => $SaleCount
         ], Response::HTTP_OK);
@@ -48,9 +48,12 @@ class DashboardController extends Controller
             ->count('receipt_number');
 
         return response()->json([
-            'total_sale_today' => $totalSaleToday,
-            'customers_count_today' => $customersCountToday,
-            'sale_count_today' => $saleCountToday,
+            'total_sale' => $totalSaleToday,
+            'CustomersCount' => $customersCountToday,
+            'Sale'          => $saleCountToday
+            // 'total_sale_today' => $totalSaleToday,
+            // 'customers_count_today' => $customersCountToday,
+            // 'sale_count_today' => $saleCountToday,
         ], Response::HTTP_OK);
     }
 
@@ -72,9 +75,9 @@ class DashboardController extends Controller
             ->count('receipt_number');
 
         return response()->json([
-            'total_sale_this_month' => $totalSaleThisMonth,
-            'customers_count_this_month' => $customersCountThisMonth,
-            'sale_count_this_month' => $saleCountThisMonth,
+            'total_sale' => $totalSaleThisMonth,
+            'CustomersCount' => $customersCountThisMonth,
+            'Sale'          => $saleCountThisMonth
         ], Response::HTTP_OK);
     }
     public function getDashboardLastMonth()
@@ -96,9 +99,9 @@ class DashboardController extends Controller
             ->count('receipt_number');
 
         return response()->json([
-            'total_sale_last_month' => $totalSaleLastMonth,
-            'customers_count_last_month' => $customersCountLastMonth,
-            'sale_count_last_month' => $saleCountLastMonth,
+            'total_sale' => $totalSaleLastMonth,
+            'CustomersCount' => $customersCountLastMonth,
+            'Sale'          => $saleCountLastMonth
         ], Response::HTTP_OK);
     }
 }
