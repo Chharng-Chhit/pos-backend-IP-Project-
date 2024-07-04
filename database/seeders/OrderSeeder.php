@@ -7,24 +7,33 @@ use App\Models\Order;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class OrderSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
+
     public function run(): void
     {
         //
         // $data = [];
+        function randomDateInRange($start, $end)
+        {
+            $randomTimestamp = mt_rand($start->timestamp, $end->timestamp);
+            return Carbon::createFromTimestamp($randomTimestamp);
+        }
         for ($i = 1; $i <= 1000; $i++) {
+            $startOfLastMonth = Carbon::now()->subMonth()->startOfMonth();
+            $now = Carbon::now();
 
             $data = [
                 'receipt_number'    => $this->generateReceiptNumber(),
                 'cashier_id'        => rand(2, 4),
                 'customer_id'       => rand(2, 4),
                 'total_price'       => 0,
-                'ordered_at'        => Date('Y-m-d H:i:s')
+                'ordered_at'        => randomDateInRange($startOfLastMonth, $now)->format('Y-m-d H:i:s'),
             ];
             DB::table('order')->insert($data);
         }
