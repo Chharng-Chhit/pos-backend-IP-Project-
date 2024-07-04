@@ -24,7 +24,7 @@ class DashboardController extends Controller
         $SaleCount = Order::distinct('receipt_number')->count('receipt_number');
 
         return response()->json([
-            'total_sale' => number_format($totalSale),
+            'total_sale' => number_format($totalSale, 2),
             'CustomersCount' => number_format($CustomersCount),
             'Sale'          => number_format($SaleCount)
         ], Response::HTTP_OK);
