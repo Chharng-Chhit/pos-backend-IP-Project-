@@ -51,6 +51,20 @@ class SaleController extends Controller
         return response()->json($data, Response::HTTP_OK);
     }
 
+    public function getDataById(Request $req)
+    {
+        $id = $req->input('id');
+        $data = Order::select('*')
+            ->with([
+                'cashier', // M:1
+                'details', // 1:M
+                'customer'
+            ])->find($id)
+            ;
+
+        return response()->json($data, Response::HTTP_OK);
+    }
+
     // public function delete($id = 0)
     // {
     //     $data = Order::find($id);

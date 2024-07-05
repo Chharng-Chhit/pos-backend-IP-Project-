@@ -59,7 +59,7 @@ class ProductSeeder extends Seeder
                 "code"          => 'B0009',
                 "image"         => 'pos/product/Coca Cola.png',
                 "unit_price"    => 1.5,
-                "in_stock"      => 200,
+                "in_stock"      => 50,
                 "created_at"    => Carbon::now(),
                 "updated_at"    => Carbon::now()
             ],
@@ -69,7 +69,7 @@ class ProductSeeder extends Seeder
                 "code"          => 'D0001',
                 "image"         => 'pos/product/Fat Milk.png',
                 "unit_price"    => 3.5,
-                "in_stock"      => 200,
+                "in_stock"      => 50,
                 "created_at"    => Carbon::now(),
                 "updated_at"    => Carbon::now()
             ],
@@ -79,7 +79,7 @@ class ProductSeeder extends Seeder
                 "code"          => 'D0002',
                 "image"         => 'pos/product/Unsalted Butter.png',
                 "unit_price"    => 2.25,
-                "in_stock"      => 200,
+                "in_stock"      => 50,
                 "created_at"    => Carbon::now(),
                 "updated_at"    => Carbon::now()
             ],
@@ -89,7 +89,7 @@ class ProductSeeder extends Seeder
                 "code"          => 'A0010',
                 "image"         => 'pos/product/Angkor beer.png',
                 "unit_price"    => 1.95,
-                "in_stock"      => 200,
+                "in_stock"      => 50,
                 "created_at"    => Carbon::now(),
                 "updated_at"    => Carbon::now()
             ],
@@ -99,7 +99,7 @@ class ProductSeeder extends Seeder
                 "code"          => 'C0002',
                 "image"         => 'pos/product/Clear Men.png',
                 "unit_price"    => 1.95,
-                "in_stock"      => 200,
+                "in_stock"      => 50,
                 "created_at"    => Carbon::now(),
                 "updated_at"    => Carbon::now()
             ],
@@ -109,7 +109,7 @@ class ProductSeeder extends Seeder
                 "code"          => 'S0002',
                 "image"         => 'pos/product/Notebook.png',
                 "unit_price"    => 0.95,
-                "in_stock"      => 200,
+                "in_stock"      => 50,
                 "created_at"    => Carbon::now(),
                 "updated_at"    => Carbon::now()
             ],
@@ -119,7 +119,7 @@ class ProductSeeder extends Seeder
                 "code"          => 'S0003',
                 "image"         => 'pos/product/Raw Meats.png',
                 "unit_price"    => 0.95,
-                "in_stock"      => 200,
+                "in_stock"      => 50,
                 "created_at"    => Carbon::now(),
                 "updated_at"    => Carbon::now()
             ],
@@ -129,7 +129,7 @@ class ProductSeeder extends Seeder
                 "code"          => 'S0004',
                 "image"         => 'pos/product/SamYang.png',
                 "unit_price"    => 0.95,
-                "in_stock"      => 200,
+                "in_stock"      => 50,
                 "created_at"    => Carbon::now(),
                 "updated_at"    => Carbon::now()
             ],
@@ -139,7 +139,7 @@ class ProductSeeder extends Seeder
                 "code"          => 'B0004',
                 "image"         => 'pos/product/Coca Cola1.png',
                 "unit_price"    => 1.5,
-                "in_stock"      => 200,
+                "in_stock"      => 50,
                 "created_at"    => Carbon::now(),
                 "updated_at"    => Carbon::now()
             ],
@@ -149,7 +149,7 @@ class ProductSeeder extends Seeder
                 "code"          => 'D0004',
                 "image"         => 'pos/product/Fat Milk1.png',
                 "unit_price"    => 3.5,
-                "in_stock"      => 200,
+                "in_stock"      => 50,
                 "created_at"    => Carbon::now(),
                 "updated_at"    => Carbon::now()
             ],
@@ -159,7 +159,7 @@ class ProductSeeder extends Seeder
                 "code"          => 'D0005',
                 "image"         => 'pos/product/Unsalted Butter1.png',
                 "unit_price"    => 2.25,
-                "in_stock"      => 200,
+                "in_stock"      => 50,
                 "created_at"    => Carbon::now(),
                 "updated_at"    => Carbon::now()
             ],
@@ -169,7 +169,7 @@ class ProductSeeder extends Seeder
                 "code"          => 'A0006',
                 "image"         => 'pos/product/Angkor beer1.png',
                 "unit_price"    => 1.95,
-                "in_stock"      => 200,
+                "in_stock"      => 50,
                 "created_at"    => Carbon::now(),
                 "updated_at"    => Carbon::now()
             ],
@@ -179,7 +179,7 @@ class ProductSeeder extends Seeder
                 "code"          => 'C0007',
                 "image"         => 'pos/product/Clear Men1.png',
                 "unit_price"    => 1.95,
-                "in_stock"      => 200,
+                "in_stock"      => 50,
                 "created_at"    => Carbon::now(),
                 "updated_at"    => Carbon::now()
             ],
@@ -189,7 +189,7 @@ class ProductSeeder extends Seeder
                 "code"          => 'S0008',
                 "image"         => 'pos/product/Notebook1.png',
                 "unit_price"    => 0.95,
-                "in_stock"      => 200,
+                "in_stock"      => 50,
                 "created_at"    => Carbon::now(),
                 "updated_at"    => Carbon::now()
             ],
@@ -199,7 +199,7 @@ class ProductSeeder extends Seeder
                 "code"          => 'S0009',
                 "image"         => 'pos/product/Raw Meats1.png',
                 "unit_price"    => 0.95,
-                "in_stock"      => 200,
+                "in_stock"      => 50,
                 "created_at"    => Carbon::now(),
                 "updated_at"    => Carbon::now()
             ],
@@ -209,7 +209,7 @@ class ProductSeeder extends Seeder
                 "code"          => 'S0010',
                 "image"         => 'pos/product/SamYang1.png',
                 "unit_price"    => 0.95,
-                "in_stock"      => 200,
+                "in_stock"      => 50,
                 "created_at"    => Carbon::now(),
                 "updated_at"    => Carbon::now()
             ],

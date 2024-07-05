@@ -83,6 +83,9 @@ Route::group(["middleware" => ["auth:api"], 'prefix' => 'pos'], function () {
 
 Route::group(["middleware" => ["auth:api"], 'prefix' => 'sale'], function () {
     Route::get("/", [SaleController::class, 'getData']);
+    Route::get("/view", [SaleController::class, 'getDataById']);
+
+
     Route::get('/print/{receipt_number}',   [PrintController::class, 'printInvoice']);
 });
 Route::group(["middleware" => ["auth:api"], 'prefix' => 'dasboard'], function () {
