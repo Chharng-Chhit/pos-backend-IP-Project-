@@ -152,7 +152,7 @@ class UserController extends Controller
         if ($req->avatar) {
             $user->avatar = $req->avatar;
         } else {
-            $user->avatar = 'pos/user/user.png';
+            $user->avatar = 'pos/user/user.jpg';
         }
 
         $user->save();
