@@ -48,7 +48,16 @@ class SaleController extends Controller
         $data = $data->orderBy('id', 'desc')
             ->paginate($req->limit ? $req->limit : 10);
 
-        return response()->json($data, Response::HTTP_OK);
+        return response()->json([
+                'data' => $data->items(),
+                'total_count' => $data->total(),
+                'last_page' => $data->lastPage(),
+                'current_page' => $data->currentPage(),
+                'per_page' => $data->perPage(),
+            ]
+            // $data
+
+        , Response::HTTP_OK);
     }
 
     public function getDataById(Request $req)
