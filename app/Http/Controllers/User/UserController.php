@@ -150,7 +150,9 @@ class UserController extends Controller
         $user->is_active = true;
 
         if ($req->avatar) {
-            $user->avatar = $req->avatar;
+            $imageService = new ImageService();
+            $imagePath = $imageService->uploadImage($req->name, 'users', $req->avatar);
+            $user->avatar = $imagePath;
         } else {
             $user->avatar = 'pos/user/user.jpg';
         }
